@@ -1,4 +1,5 @@
 import type { MetaFunction } from "@remix-run/node";
+import { useEffect } from "react";
 
 export const meta: MetaFunction = () => {
   return [
@@ -175,6 +176,40 @@ const TECH_STACK = [
 ];
 
 export default function Index() {
+  useEffect(() => {
+    // Handle anchor links
+    const handleAnchorClick = (e: MouseEvent) => {
+      const target = e.target as HTMLElement;
+      const anchor = target.closest("a[href^='#']") as HTMLAnchorElement | null;
+
+      if (anchor) {
+        const href = anchor.getAttribute("href");
+        if (href && href.startsWith("#")) {
+          e.preventDefault();
+          const id = href.slice(1);
+          const element = document.getElementById(id);
+          if (element) {
+            element.scrollIntoView({ behavior: "smooth" });
+          }
+        }
+      }
+    };
+
+    // Also handle hash on page load
+    if (window.location.hash) {
+      const id = window.location.hash.slice(1);
+      setTimeout(() => {
+        const element = document.getElementById(id);
+        if (element) {
+          element.scrollIntoView({ behavior: "smooth" });
+        }
+      }, 100);
+    }
+
+    document.addEventListener("click", handleAnchorClick);
+    return () => document.removeEventListener("click", handleAnchorClick);
+  }, []);
+
   return (
     <div style={{ minHeight: "100vh", background: "#0a0a0f", color: "#e8e8ed", fontFamily: "'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif" }}>
       {/* ===== NAVBAR ===== */}
@@ -528,7 +563,7 @@ export default function Index() {
       </section>
 
       {/* ===== CLI COMMANDS ===== */}
-      <section style={{ background: "#111118", borderTop: "1px solid #222233", borderBottom: "1px solid #222233" }}>
+      <section id="cli" style={{ background: "#111118", borderTop: "1px solid #222233", borderBottom: "1px solid #222233" }}>
         <div style={{ padding: "112px 24px", maxWidth: 1200, margin: "0 auto" }}>
           <div style={{ textAlign: "center", marginBottom: 64 }}>
             <span style={{ display: "inline-block", fontSize: "0.75rem", fontWeight: 600, textTransform: "uppercase", letterSpacing: "0.1em", color: "#fcc419", marginBottom: 16 }}>CLI</span>
@@ -545,12 +580,20 @@ export default function Index() {
               { cmd: "thunder watch", desc: "Start dev mode with file watching and automatic hot-reload.", flags: "--entrypoint, --admin-port" },
               { cmd: "thunder test", desc: "Run tests using the built-in thunder:testing library.", flags: "--file, --filter, --timeout" },
               { cmd: "thunder check", desc: "Type-check TypeScript functions without running them.", flags: "--entrypoint" },
-              { cmd: "thunder deploy", desc: "Bundle and deploy a function to a running Thunder server.", flags: "--entrypoint, --name, --server" },
+              { cmd: "thunder deploy", desc: "Bundle and deploy a function to a running Thunder server.", flags: "--entrypoint, --name, --server", badge: "soon" },
             ].map((c) => (
               <div key={c.cmd} style={{ background: "#13131d", border: "1px solid #222233", borderRadius: 16, padding: 24 }}>
-                <code style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: "0.875rem", fontWeight: 600, color: "#fcc419" }}>{c.cmd}</code>
+                <code style={{ fontFamily: "'JetBrains Mono', monospace", fontSize: "0.875rem", fontWeight: 600, color: "#fcc419" }}>
+                  {c.cmd}
+                  {c.badge && (
+                    <span style={{ display: "inline-block", marginTop: 8, padding: "2px 6px", background: "#fcc419", color: "#0a0a0f", borderRadius: 4, fontSize: "0.625rem", fontWeight: 600, marginLeft: 12 }}>
+                      {c.badge}
+                    </span>
+                  )}
+                </code>
                 <p style={{ fontSize: "0.9rem", color: "#9595a8", lineHeight: 1.6, marginTop: 12, marginBottom: 12 }}>{c.desc}</p>
                 <p style={{ fontSize: "0.75rem", color: "#6b6b80", fontFamily: "'JetBrains Mono', monospace" }}>{c.flags}</p>
+                
               </div>
             ))}
           </div>

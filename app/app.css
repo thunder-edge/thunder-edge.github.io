@@ -1,0 +1,84 @@
+@import "tailwindcss";
+
+@theme {
+  --color-bg-primary: #0a0a0f;
+  --color-bg-secondary: #111118;
+  --color-bg-tertiary: #1a1a24;
+  --color-bg-card: #13131d;
+  --color-bg-card-hover: #1a1a28;
+  --color-bg-code: #0d0d14;
+
+  --color-text-primary: #e8e8ed;
+  --color-text-secondary: #9595a8;
+  --color-text-tertiary: #6b6b80;
+  --color-text-code: #c4c4d4;
+
+  --color-accent: #f59f00;
+  --color-accent-light: #fcc419;
+  --color-accent-blue: #ff922b;
+  --color-accent-glow: rgba(245, 159, 0, 0.3);
+  --color-accent-subtle: rgba(245, 159, 0, 0.1);
+
+  --color-thunder-yellow: #ffd43b;
+  --color-thunder-orange: #ff922b;
+
+  --color-border: #222233;
+  --color-border-subtle: #1a1a2a;
+
+  --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  --font-mono: 'JetBrains Mono', 'Fira Code', monospace;
+}
+
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  scroll-behavior: smooth;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+/* Gradient text utility */
+.gradient-text {
+  background: linear-gradient(135deg, #ffd43b 0%, #f59f00 50%, #ff922b 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* Terminal syntax colors */
+.syntax-keyword { color: #c678dd; }
+.syntax-function { color: #61afef; }
+.syntax-string { color: #98c379; }
+.syntax-comment { color: #5c6370; font-style: italic; }
+.syntax-type { color: #e5c07b; }
+.syntax-param { color: #e06c75; }
+.syntax-property { color: #d19a66; }
+
+/* Glow animation */
+@keyframes glow-pulse {
+  0%, 100% { opacity: 0.4; }
+  50% { opacity: 0.8; }
+}
+
+.animate-glow {
+  animation: glow-pulse 4s ease-in-out infinite;
+}
+
+/* Grid pattern */
+.hero-grid-pattern {
+  background-image:
+    linear-gradient(rgba(245, 159, 0, 0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(245, 159, 0, 0.03) 1px, transparent 1px);
+  background-size: 60px 60px;
+  mask-image: linear-gradient(to bottom, transparent 0%, black 30%, black 70%, transparent 100%);
+  -webkit-mask-image: linear-gradient(to bottom, transparent 0%, black 30%, black 70%, transparent 100%);
+}
